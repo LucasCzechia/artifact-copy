@@ -42,16 +42,17 @@
         .container {
             background-color: var(--container-bg); padding: 30px 35px; border-radius: 10px;
             max-width: 700px; width: 100%; text-align: center; border: 1px solid var(--border-color);
-            display: flex; flex-direction: column; gap: 20px; min-width: 0;
+            display: flex; flex-direction: column; gap: 18px; /* Slightly reduced gap */
+            min-width: 0;
         }
         h1 {
             font-family: var(--font-mono); color: var(--text-bright); font-size: 1.5rem; font-weight: 500;
-            border-bottom: 1px solid var(--border-color); padding-bottom: 15px; margin-bottom: 5px;
+            border-bottom: 1px solid var(--border-color); padding-bottom: 15px; margin-bottom: 0; /* Remove bottom margin */
             letter-spacing: 0.5px; word-break: break-word;
             display: flex; align-items: center; justify-content: center; gap: 0.5em;
         }
         .title-icon { height: 1.1em; width: auto; }
-        .code-block-wrapper { position: relative; margin-bottom: 10px; }
+        .code-block-wrapper { position: relative; margin-bottom: 5px; } /* Reduced bottom margin */
         pre {
             background-color: var(--pre-bg); color: var(--text-color);
             padding: 20px; padding-right: 55px; border-radius: 8px;
@@ -64,8 +65,8 @@
         pre code.hljs {
             display: block; overflow-x: auto; padding: 0; background: none; color: inherit;
             font-family: var(--font-mono);
-             font-size: 1.05rem; /* Increased base font size */
-             line-height: 1.6; /* Adjust line height slightly for bigger font */
+             font-size: 1.05rem;
+             line-height: 1.6;
              word-break: break-all;
         }
         @media (hover: hover) { pre:hover { background-color: var(--pre-hover-bg); } }
@@ -86,24 +87,38 @@
         }
         .copy-button:active { transform: scale(0.96); background-color: var(--button-hover-bg); }
         .copy-button .fas { font-size: 0.9rem; color: var(--text-muted); }
-        .status-area { min-height: 30px; display: flex; flex-direction: column; align-items: center; gap: 8px; margin-top: 5px; }
+        .status-area {
+            min-height: 30px; display: flex; flex-direction: column;
+            align-items: center; gap: 8px;
+            margin-top: 0; /* Reduced margin-top */
+            padding-top: 5px; /* Add some padding instead */
+        }
         .status-message {
-            font-weight: normal; font-size: 0.9rem; display: flex; align-items: center; gap: 8px;
-            padding: 6px 12px; border-radius: 6px; opacity: 0; transform: translateY(5px);
+            font-weight: normal;
+            font-size: 1rem; /* Increased status message font size */
+            display: flex; align-items: center; gap: 10px; /* Increased gap slightly */
+            padding: 8px 15px; /* Increased padding */
+            border-radius: 6px; opacity: 0; transform: translateY(5px);
             transition: opacity 0.3s ease-out, transform 0.3s ease-out;
             border: 1px solid transparent; width: fit-content; max-width: 100%; text-align: center;
         }
         .status-message.visible { opacity: 1; transform: translateY(0); }
-        .status-message .fas { font-size: 1rem; flex-shrink: 0; }
+        .status-message .fas { font-size: 1.1rem; flex-shrink: 0; } /* Slightly larger icon */
         .status-message span { word-break: break-word; }
         .status-message.success { color: var(--success-color); }
         .status-message.error { color: var(--error-color); }
         .status-message.info { color: var(--info-color); }
-        .redirect-instructions { margin-top: 5px; font-size: 0.8rem; color: var(--text-muted); opacity: 0; transition: opacity 0.3s ease-in-out 0.5s; font-weight: normal; }
+        .redirect-instructions {
+             margin-top: 2px; /* Reduced top margin */
+             font-size: 0.85rem; /* Slightly larger redirect text */
+             color: var(--text-muted); opacity: 0;
+             transition: opacity 0.3s ease-in-out 0.5s; font-weight: normal;
+         }
         .redirect-instructions.visible { opacity: 1; }
         .discord-link {
             display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-            margin-top: 10px; padding: 12px 22px; background-color: var(--discord-blue);
+            margin-top: 8px; /* Slightly reduced margin */
+            padding: 12px 22px; background-color: var(--discord-blue);
             color: #ffffff; text-decoration: none; border-radius: 6px;
             font-weight: 500; font-size: 0.9rem;
             transition: background-color 0.2s ease, transform 0.1s ease;
@@ -128,19 +143,21 @@
             h1 { font-size: 1.25rem; padding-bottom: 12px; }
             .title-icon { height: 1em; }
             pre { padding: 15px; padding-right: 48px; max-height: 55vh; }
-            pre code.hljs { font-size: 0.9rem; } /* Adjust font size on mobile */
+            pre code.hljs { font-size: 0.9rem; }
             .copy-button { padding: 8px 10px; font-size: 0.8rem; top: 8px; right: 8px; }
             .copy-button .fas { font-size: 0.85rem; }
-            .status-message { font-size: 0.85rem; padding: 6px 10px; }
-            .redirect-instructions { font-size: 0.75rem; }
+            .status-message { font-size: 0.9rem; padding: 7px 12px; } /* Adjust mobile status size */
+            .status-message .fas { font-size: 1rem; }
+            .redirect-instructions { font-size: 0.8rem; } /* Adjust mobile redirect size */
             .discord-link { padding: 11px 20px; font-size: 0.85rem; width: auto; max-width: 100%; }
         }
         @media (max-width: 360px) {
               h1 { font-size: 1.15rem; } .title-icon { height: 0.9em; }
-              pre code.hljs { font-size: 0.8rem; } /* Adjust font size on small mobile */
+              pre code.hljs { font-size: 0.8rem; }
               pre { padding-right: 45px; }
               .copy-button { padding: 7px 9px; font-size: 0.75rem; }
-              .status-message { font-size: 0.8rem; }
+              .status-message { font-size: 0.85rem; }
+              .redirect-instructions { font-size: 0.75rem; }
               .discord-link { padding: 10px 18px; font-size: 0.8rem; }
          }
     </style>
@@ -188,25 +205,13 @@
         function detectPlatform() {
             const ua = navigator.userAgent || navigator.vendor || window.opera;
             const lowerUa = ua.toLowerCase();
-            if (/android/i.test(lowerUa)) {
-                return 'android';
-            }
-            if (/iphone|ipad|ipod/i.test(lowerUa) && !window.MSStream) { // Check for iOS, exclude Windows Phone
-                 return 'ios';
-            }
-            if (/windows phone/i.test(lowerUa)) {
-                 return 'windows_phone';
-            }
-             if (/macintosh|mac os x/i.test(lowerUa)) {
-                 return 'macos';
-             }
-            if (/windows nt/i.test(lowerUa)) {
-                 return 'windows';
-            }
-             if (/linux/i.test(lowerUa) && !/android/i.test(lowerUa)) { // Exclude Android-based Linux
-                 return 'linux';
-             }
-            return 'unknown_desktop'; // Default assumption
+            if (/android/i.test(lowerUa)) return 'android';
+            if (/iphone|ipad|ipod/i.test(lowerUa) && !window.MSStream) return 'ios';
+            if (/windows phone/i.test(lowerUa)) return 'windows_phone';
+            if (/macintosh|mac os x/i.test(lowerUa)) return 'macos';
+            if (/windows nt/i.test(lowerUa)) return 'windows';
+            if (/linux/i.test(lowerUa) && !/android/i.test(lowerUa)) return 'linux';
+            return 'unknown_desktop';
         }
 
         function isMobilePlatform(platform) {
@@ -239,7 +244,13 @@
                 attemptRedirect();
             }).catch(err => {
                 console.error('Manual copy failed: ', err); clearStatus();
-                showStatus(errorMessage, 'Copy failed. Check browser permissions.', 'error', 'fa-times-circle');
+                let errorMsg = 'Copy failed. Please try again or copy manually.';
+                if (err.name === 'NotAllowedError') {
+                    errorMsg = 'Copy failed: Permission denied. Please allow clipboard access for this site (check near address bar or in browser settings), then try copying again.';
+                } else {
+                     errorMsg = `Copy failed: ${err.name}. Try copying manually.`;
+                }
+                showStatus(errorMessage, errorMsg, 'error', 'fa-times-circle');
                 manualCopyButton.innerHTML = '<i class="fas fa-copy" aria-hidden="true"></i> Copy';
                 manualCopyButton.setAttribute('aria-label', 'Copy artifact content to clipboard');
             });
@@ -247,43 +258,32 @@
 
         function attemptRedirect() {
             if (!copySuccess) return;
-
             const platform = detectPlatform();
             const isMobile = isMobilePlatform(platform);
             const isAndroid = platform === 'android';
 
             if (returnUrl) {
-                 redirectMessage.classList.add('visible'); // Show message area
-
+                 redirectMessage.classList.add('visible');
                 if (isAndroid) {
-                     // ANDROID: Show message only, no button, no auto-redirect
                      redirectMessage.textContent = "Content copied! Please return to Discord manually.";
-                     discordReturnLink.style.display = 'none'; // Ensure button is hidden
+                     discordReturnLink.style.display = 'none';
                 } else if (isMobile) {
-                    // OTHER MOBILE (iOS etc.): Show message and button, NO auto-redirect
                     redirectMessage.textContent = "Content copied! Use the button below to return to Discord.";
                     discordReturnLink.href = returnUrl;
                     discordReturnLink.classList.add('visible');
                 } else {
-                    // DESKTOP: Show message, button, and attempt auto-redirect
                     redirectMessage.textContent = "Content copied! Attempting redirect back to Discord...";
                     discordReturnLink.href = returnUrl;
                     discordReturnLink.classList.add('visible');
                     setTimeout(() => {
-                        try {
-                            window.location.href = returnUrl;
-                            setTimeout(() => { redirectMessage.textContent = "Redirect may be blocked. Use link above or close tab."; }, 2000);
-                        } catch (e) {
-                             console.error("Redirect failed:", e);
-                             redirectMessage.textContent = "Redirect failed. Use link above or close tab.";
-                        }
+                        try { window.location.href = returnUrl; setTimeout(() => { redirectMessage.textContent = "Redirect may be blocked. Use link above or close tab."; }, 2000); }
+                        catch (e) { console.error("Redirect failed:", e); redirectMessage.textContent = "Redirect failed. Use link above or close tab."; }
                     }, 2500);
                 }
             } else {
-                 // No return URL: Just show success message for all platforms
                  redirectMessage.textContent = "Content copied! You can close this tab.";
                  redirectMessage.classList.add('visible');
-                 discordReturnLink.style.display = 'none'; // No button if no URL
+                 discordReturnLink.style.display = 'none';
             }
         }
 
@@ -304,12 +304,8 @@
                         textElement.textContent = contentToCopy;
                         codeBlockPre.setAttribute('aria-label', `Artifact text content: ${contentToCopy.substring(0, 100)}...`);
                         manualCopyButton.classList.add('visible');
-
-                        try {
-                           if (typeof hljs !== 'undefined') { hljs.highlightElement(textElement); }
-                           else { console.warn('Highlight.js not loaded.'); }
-                        } catch (highlightError) { console.error("Syntax highlighting failed:", highlightError); }
-
+                        try { if (typeof hljs !== 'undefined') { hljs.highlightElement(textElement); } else { console.warn('Highlight.js not loaded.'); } }
+                        catch (highlightError) { console.error("Syntax highlighting failed:", highlightError); }
                     } catch (decodeError) {
                         console.error("Error decoding text:", decodeError); textElement.textContent = '// Error Decoding Content //'; clearStatus(); showStatus(errorMessage, 'Error decoding content from URL.', 'error', 'fa-exclamation-triangle'); return;
                     }
@@ -319,7 +315,6 @@
                     } else {
                         clearStatus(); const reason = window.isSecureContext ? 'Clipboard API issue?' : 'Not HTTPS.'; showStatus(copyStatus, `Manual copy needed. (${reason})`, 'info', 'fa-info-circle'); manualCopyButton.innerHTML = '<i class="fas fa-copy" aria-hidden="true"></i> Copy'; manualCopyButton.setAttribute('aria-label', 'Copy artifact content to clipboard');
                     }
-
                 } else {
                     textElement.textContent = '// No Content Provided //'; clearStatus(); showStatus(missingParamMessage, 'No content parameter.', 'error', 'fa-exclamation-triangle'); manualCopyButton.style.display = 'none';
                 }
