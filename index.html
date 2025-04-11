@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Copy Artifact Content</title>
+    <style>
+        @font-face {
+            font-family: 'Stratford Serial';
+            src: url('/fonts/Stratford-Serial-Regular.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Stratford Serial Bold';
+            src: url('/fonts/Stratford-Serial-Bold.ttf') format('truetype');
+            font-weight: bold;
+            font-style: normal;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Stratford Serial', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #36393f;
+            color: #dcddde;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 25px;
+        }
+
+        .container {
+            background-color: #2f3136;
+            padding: 35px 40px;
+            border-radius: 8px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+            max-width: 850px;
+            width: 100%;
+            text-align: center;
+            border: 1px solid #202225;
+        }
+
+        h1 {
+             font-family: 'Stratford Serial Bold', sans-serif;
+             color: #ffffff;
+             margin-top: 0;
+             margin-bottom: 25px;
+             font-size: 1.8em;
+             border-bottom: 1px solid #40444b;
+             padding-bottom: 15px;
+        }
+
+        p {
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        pre {
+            background-color: #202225;
+            padding: 20px;
+            border-radius: 5px;
+            text-align: left;
+            overflow: auto;
+            max-height: 50vh;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            border: 1px solid #1a1b1e;
+            margin-top: 20px;
+            margin-bottom: 30px;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.3);
+        }
+
+        code {
+            font-family: "Consolas", "Monaco", "Courier New", monospace;
+            font-size: 0.95em;
+            color: #b9bbbe;
+            display: block;
+        }
+
+        .status-message {
+            margin-top: 20px;
+            font-weight: bold;
+            min-height: 22px;
+            font-size: 1.1em;
+            transition: opacity 0.3s ease-in-out;
+            opacity: 0;
+        }
+
+        .status-message.visible {
+           opacity: 1;
+        }
+
+        .success {
+            color: #43b581;
+        }
+
+        .error {
+            color: #f04747;
+        }
+
+        .info {
+             color: #7289da;
+             font-weight: normal;
+             font-size: 0.95em;
+        }
+
+        .instructions {
+            margin-top: 15px;
+            font-size: 0.9em;
+            color: #72767d;
+        }
+
+        .discord-link {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #5865f2;
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background-color 0.2s ease;
+        }
+        .discord-link:hover {
+            background-color: #4752c4;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Copy Artifact Content</h1>
+
+        <pre id="code-block"><code id="text-to-copy">Loading content...</code></pre>
+
+        <div id="copy-status" class="status-message"></div>
+
+        <div id="redirect-message" class="instructions" style="display: none;">
+            Attempting to redirect you back to Discord... If it doesn't work automatically, please click the link below or close this tab.
+        </div>
+        <a id="discord-return-link" href="#" class="discord-link" style="display: none;">Return to Discord Channel</a>
+
+        <div id="error-message" class="status-message error"></div>
+        <div id="missing-param-message" class="status-message error"></div>
+
+    </div>
+
+    <script>
+        const textElement = document.getElementById('text-to-copy');
+        const copyStatus = document.getElementById('copy-status');
+        const redirectMessage = document.getElementById('redirect-message');
+        const errorMessage = document.getElementById('error-message');
+        const missingParamMessage = document.getElementById('missing-param-message');
+        const discordReturnLink = document.getElementById('discord-return-link');
+
+
+        let contentToCopy = '';
+        let returnUrl = null;
+
+        function showStatus(element, message, type = 'success') {
+            element.textContent = message;
+            element.className = `status-message ${type} visible`;
+        }
+
+        function hideStatus(element) {
+            element.textContent = '';
+            element.className = 'status-message';
+        }
+
+        function attemptRedirect() {
+            if (returnUrl) {
+                redirectMessage.style.display = 'block';
+                discordReturnLink.href = returnUrl;
+                discordReturnLink.style.display = 'inline-block';
+
+                setTimeout(() => {
+                    try {
+                        window.location.href = returnUrl;
+                        // Add a fallback message update after a short delay in case redirect is blocked
+                        setTimeout(() => {
+                            redirectMessage.textContent = "If you haven't been redirected, please click the link above or close this tab to return to Discord.";
+                        }, 1500);
+                    } catch (e) {
+                         console.error("Redirect failed:", e);
+                         redirectMessage.textContent = "Automatic redirect failed. Please click the link above or close this tab to return to Discord.";
+                    }
+                }, 3000);
+            } else {
+                 redirectMessage.textContent = "Content copied! You can now safely close this tab and return to Discord.";
+                 redirectMessage.style.display = 'block';
+                 setTimeout(window.close, 3000); // Fallback to closing if no return URL
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            try {
+                const urlParams = new URLSearchParams(window.location.search);
+                const encodedText = urlParams.get('text');
+                const encodedReturnUrl = urlParams.get('returnUrl');
+
+                if (encodedReturnUrl) {
+                    try {
+                        returnUrl = decodeURIComponent(encodedReturnUrl);
+                        // Basic validation for discord URLs
+                        if (!returnUrl.startsWith('discord://') && !returnUrl.startsWith('https://discord.com/channels/')) {
+                             console.warn("Invalid returnUrl format:", returnUrl);
+                             returnUrl = null; // Discard invalid URL
+                        }
+                    } catch (urlError) {
+                         console.error("Error decoding returnUrl:", urlError);
+                         returnUrl = null;
+                    }
+                }
+
+
+                if (encodedText) {
+                    contentToCopy = decodeURIComponent(encodedText);
+                    textElement.textContent = contentToCopy;
+
+                    if (navigator.clipboard && window.isSecureContext) {
+                        navigator.clipboard.writeText(contentToCopy).then(() => {
+                            showStatus(copyStatus, '✅ Content copied to clipboard!');
+                            attemptRedirect();
+                        }).catch(err => {
+                            console.error('Automatic copy failed: ', err);
+                            showStatus(errorMessage, '❌ Automatic copy failed. Please copy manually.', 'error');
+                        });
+                    } else {
+                        showStatus(errorMessage, '⚠️ Cannot copy automatically. Please copy manually.', 'info');
+                    }
+
+                } else {
+                    textElement.textContent = 'Error: No content provided.';
+                    showStatus(missingParamMessage, '❌ Error: No content parameter found in the URL.', 'error');
+                }
+            } catch (e) {
+                 console.error("Error processing URL parameters:", e);
+                 textElement.textContent = 'Error loading content.';
+                 showStatus(errorMessage, '❌ Error processing parameters from URL. The link might be corrupted.', 'error');
+            }
+        });
+    </script>
+</body>
+</html>
