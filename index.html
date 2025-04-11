@@ -28,13 +28,17 @@
              --font-mono: ui-monospace, Menlo, Monaco, Cascadia Mono, Segoe UI Mono, "Roboto Mono", "Oxygen Mono", "Ubuntu Monospace", "Source Code Pro", "Fira Mono", "Droid Sans Mono", "Courier New", monospace;
         }
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        html { font-size: 16px; -webkit-overflow-scrolling: touch; scroll-behavior: smooth; }
+        html { font-size: 16px; -webkit-overflow-scrolling: touch; scroll-behavior: smooth; height: 100%; }
         body {
             font-family: var(--font-mono); background-color: var(--bg-color); color: var(--text-color);
             display: flex; flex-direction: column; justify-content: center; align-items: center;
-            min-height: 100vh; padding: 20px; line-height: 1.5;
+            min-height: 100%; /* Changed from 100vh to allow footer positioning */
+             padding: 20px;
+             padding-bottom: 80px; /* Add padding to bottom to prevent overlap with absolute footer */
+             line-height: 1.5;
             -webkit-text-size-adjust: 100%; text-size-adjust: 100%;
             -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
+            position: relative; /* Needed for absolute footer positioning */
         }
         a:focus, button:focus, [tabindex]:focus { outline: 2px solid var(--button-focus-outline); outline-offset: 2px; border-radius: 4px; }
         a:focus-visible, button:focus-visible, [tabindex]:focus-visible { outline: 2px solid var(--button-focus-outline); outline-offset: 2px; border-radius: 4px; }
@@ -44,6 +48,7 @@
             max-width: 700px; width: 100%; text-align: center; border: 1px solid var(--border-color);
             display: flex; flex-direction: column; gap: 15px;
             min-width: 0;
+            margin-bottom: 20px; /* Add margin below container before footer */
         }
         h1 {
             font-family: var(--font-mono); color: var(--text-bright); font-size: 1.5rem; font-weight: 500;
@@ -90,7 +95,7 @@
         .status-area {
             min-height: 30px; display: flex; flex-direction: column;
             align-items: center;
-            gap: 0; /* Removed gap */
+            gap: 0;
             margin-top: 5px;
             padding-top: 0;
         }
@@ -111,12 +116,10 @@
         .status-message.error { color: var(--error-color); }
         .status-message.info { color: var(--info-color); }
         .redirect-instructions {
-             margin-top: 0; /* Removed top margin */
+             margin-top: 0;
              font-size: 0.85rem;
              color: var(--text-muted); opacity: 0;
              transition: opacity 0.3s ease-in-out 0.5s; font-weight: normal;
-             /* Optional: Add slight padding if text touches icon baseline */
-             /* padding-top: 2px; */
          }
         .redirect-instructions.visible { opacity: 1; }
         .discord-link {
@@ -141,22 +144,53 @@
             color: var(--text-bright); border: 1px solid var(--border-color); border-radius: 8px;
             text-align: center; font-family: var(--font-mono); max-width: 700px; width: 100%;
         }
+
+        /* Footer Styles */
+        footer {
+            position: absolute; /* Position relative to body */
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 15px 20px;
+            text-align: center;
+            background-color: var(--container-bg); /* Match container or use slightly different */
+            border-top: 1px solid var(--border-color);
+        }
+        .footer-link {
+            display: inline-flex; /* Align items nicely */
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            color: var(--text-muted); /* Muted color for footer */
+            font-size: 0.85rem;
+            transition: color 0.2s ease;
+        }
+        .footer-link:hover, .footer-link:focus-visible {
+            color: var(--text-bright); /* Brighter on hover/focus */
+        }
+        .footer-icon {
+            height: 1.5em; /* Adjust size as needed */
+            width: auto;
+            vertical-align: middle; /* Helps alignment */
+            /* Optional: Add slight filter for dark theme if icon is too bright */
+            /* filter: brightness(0.9); */
+        }
+
         @media (max-width: 600px) {
-            body { padding: 15px; overflow-x: hidden; }
-            .container { padding: 25px 20px; gap: 12px; }
+            body { padding: 15px; padding-bottom: 90px; /* Ensure enough space for footer */ overflow-x: hidden; }
+            .container { padding: 25px 20px; gap: 12px; margin-bottom: 15px; }
             h1 { font-size: 1.25rem; padding-bottom: 12px; }
             .title-icon { height: 1em; }
             pre { padding: 15px; padding-right: 48px; max-height: 55vh; }
             pre code.hljs { font-size: 0.9rem; }
             .copy-button { padding: 8px 10px; font-size: 0.8rem; top: 8px; right: 8px; }
             .copy-button .fas { font-size: 0.85rem; }
-            .status-message {
-                font-size: 1rem;
-                padding: 8px 14px;
-            }
+            .status-message { font-size: 1rem; padding: 8px 14px; }
             .status-message .fas { font-size: 1.1rem; }
-            .redirect-instructions { font-size: 0.8rem; margin-top: 0; } /* Ensure no margin on mobile */
+            .redirect-instructions { font-size: 0.8rem; margin-top: 0; }
             .discord-link { padding: 11px 20px; font-size: 0.85rem; width: auto; max-width: 100%; margin-top: 8px;}
+            .footer-link { font-size: 0.8rem; } /* Slightly smaller footer text on mobile */
+            .footer-icon { height: 1.3em; }
         }
         @media (max-width: 360px) {
               h1 { font-size: 1.15rem; } .title-icon { height: 0.9em; }
@@ -167,6 +201,8 @@
                .status-message .fas { font-size: 1rem; }
               .redirect-instructions { font-size: 0.75rem; }
               .discord-link { padding: 10px 18px; font-size: 0.8rem; }
+               .footer-link { font-size: 0.75rem; }
+               .footer-icon { height: 1.2em; }
          }
     </style>
 </head>
@@ -174,6 +210,7 @@
     <noscript>
         This page requires JavaScript to function correctly. Please enable JavaScript in your browser settings.
     </noscript>
+
     <div class="container">
         <h1>
             <img src="https://cdn.discordapp.com/attachments/1360326540113744004/1360335430788317304/discotools-xyz-icon_85.png?ex=67fabe98&is=67f96d18&hm=5c65feeb50606178733823b266985a61b8f60feaf09ec0663c48c388c6a96a19&" alt="Artifact Icon" class="title-icon">
@@ -195,6 +232,16 @@
             <i class="fab fa-discord" aria-hidden="true"></i> Return to Discord
         </a>
     </div>
+
+    <!-- Footer -->
+    <footer>
+        <a href="https://discord.com/oauth2/authorize?client_id=1250114494081007697&permissions=412317248576&scope=bot+applications.commands" target="_blank" rel="noopener noreferrer" class="footer-link">
+            <img src="https://cdn.discordapp.com/attachments/1360326540113744004/1360345826278375649/1000074141-removebg-preview_1.png?ex=67fac846&is=67f976c6&hm=90938600249e51aae452f59bfd856dbb1f47a9b4d5184f40653961f7bfa15d8f&" alt="BoltBot Icon" class="footer-icon">
+            <span>Powered by BoltBot⚡</span>
+        </a>
+    </footer>
+    <!-- End Footer -->
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
     <script>
         const textElement = document.getElementById('text-to-copy');
