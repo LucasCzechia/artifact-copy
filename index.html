@@ -2,21 +2,17 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <!-- Essential for responsive design -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Copy Artifact</title>
+
+    <!-- Set Web Page Favicon -->
+    <link rel="icon" type="image/png" href="https://cdn.discordapp.com/attachments/1360326540113744004/1360335430788317304/discotools-xyz-icon_85.png?ex=67fabe98&is=67f96d18&hm=5c65feeb50606178733823b266985a61b8f60feaf09ec0663c48c388c6a96a19&">
+
     <!-- Font Awesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
-        /* Font Import - Optional: Use system monospace or web font */
-        /* Example: @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&display=swap'); */
-        @font-face {
-            font-family: 'Your Mono Font'; /* Example if using local */
-            /* src: url('/fonts/YourMonoFont.woff2') format('woff2'); */
-            font-weight: normal;
-            font-style: normal;
-            font-display: swap; /* Improves perceived load time */
-        }
+        /* Font Import - Optional */
+        /* @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&display=swap'); */
 
         :root {
             --bg-color: #000000;
@@ -33,25 +29,13 @@
             --info-color: #2196F3;
             --discord-blue: #5865f2;
             --discord-blue-hover: #4752c4;
-
-            /* Prioritize system monospace, fallback to generic */
             --font-mono: ui-monospace, Menlo, Monaco, Cascadia Mono, Segoe UI Mono,
                          "Roboto Mono", "Oxygen Mono", "Ubuntu Monospace", "Source Code Pro",
                          "Fira Mono", "Droid Sans Mono", "Courier New", monospace;
-                         /* Or: 'Your Mono Font', monospace; */
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        html {
-             font-size: 16px;
-             /* Smoother scrolling on touch devices */
-             -webkit-overflow-scrolling: touch;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { font-size: 16px; -webkit-overflow-scrolling: touch; }
 
         body {
             font-family: var(--font-mono);
@@ -59,12 +43,11 @@
             color: var(--text-color);
             display: flex;
             flex-direction: column;
-            justify-content: center; /* Center vertically */
-            align-items: center;     /* Center horizontally */
+            justify-content: center;
+            align-items: center;
             min-height: 100vh;
-            padding: 20px; /* Base padding */
+            padding: 20px;
             line-height: 1.5;
-            /* Prevent text size adjustment on orientation change */
             -webkit-text-size-adjust: 100%;
                -ms-text-size-adjust: 100%;
                    text-size-adjust: 100%;
@@ -75,13 +58,12 @@
             padding: 30px 35px;
             border-radius: 10px;
             max-width: 700px;
-            width: 100%; /* Takes full width up to max-width */
+            width: 100%;
             text-align: center;
             border: 1px solid var(--border-color);
             display: flex;
             flex-direction: column;
             gap: 20px;
-            /* Prevent container from shrinking too much if content is small */
             min-width: 0;
         }
 
@@ -94,24 +76,33 @@
              padding-bottom: 15px;
              margin-bottom: 5px;
              letter-spacing: 0.5px;
-             word-break: break-word; /* Prevent overflow if title somehow gets long */
+             word-break: break-word;
+             /* Use Flexbox for alignment */
+             display: flex;
+             align-items: center;
+             justify-content: center;
+             gap: 0.5em; /* Space between icon and text */
         }
 
-        .code-block-wrapper {
-            position: relative;
-            margin-bottom: 10px;
+        /* Style for the icon within the title */
+        .title-icon {
+            height: 1.1em; /* Size relative to h1 font size */
+            width: auto;    /* Maintain aspect ratio */
+            /* vertical-align: middle; Optional: Flexbox align-items handles this */
         }
+
+        .code-block-wrapper { position: relative; margin-bottom: 10px; }
 
         pre {
             background-color: var(--pre-bg);
             padding: 20px;
-            padding-right: 55px; /* Initial space for copy button */
+            padding-right: 55px;
             border-radius: 8px;
             text-align: left;
-            overflow: auto; /* Allows scrolling */
-            max-height: 48vh; /* Max height relative to viewport */
-            white-space: pre-wrap;   /* Wrap long lines */
-            word-wrap: break-word; /* Break words if needed */
+            overflow: auto;
+            max-height: 48vh;
+            white-space: pre-wrap;
+            word-wrap: break-word;
             border: 1px solid var(--border-color);
             scrollbar-width: thin;
             scrollbar-color: var(--text-muted) var(--pre-bg);
@@ -125,210 +116,100 @@
             font-size: 0.9rem;
             color: var(--text-color);
             display: block;
-            /* Ensure code itself doesn't prevent wrapping */
-            word-break: break-all; /* More aggressive breaking for code if needed */
+            word-break: break-all;
         }
 
         .copy-button {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background-color: var(--button-bg);
-            color: var(--text-color);
-            border: none;
-            border-radius: 6px;
-            padding: 7px 12px; /* Slightly more padding for easier tapping */
-            font-size: 0.85rem;
+            position: absolute; top: 10px; right: 10px;
+            background-color: var(--button-bg); color: var(--text-color);
+            border: none; border-radius: 6px;
+            padding: 7px 12px; font-size: 0.85rem;
             cursor: pointer;
             transition: background-color 0.2s ease, transform 0.1s ease;
-            display: flex;
-            align-items: center;
-            gap: 6px;
+            display: flex; align-items: center; gap: 6px;
             font-family: var(--font-mono);
-            -webkit-tap-highlight-color: transparent; /* Remove tap highlight on iOS */
+            -webkit-tap-highlight-color: transparent;
         }
-        /* Improve hover feedback on non-touch devices */
         @media (hover: hover) {
-            .copy-button:hover {
-                background-color: var(--button-hover-bg);
-                color: var(--text-bright);
-            }
-            .copy-button:hover .fas {
-                 color: var(--text-color);
-             }
+            .copy-button:hover { background-color: var(--button-hover-bg); color: var(--text-bright); }
+            .copy-button:hover .fas { color: var(--text-color); }
         }
-        .copy-button:active {
-             transform: scale(0.96);
-             background-color: var(--button-hover-bg); /* Feedback on tap */
-        }
-        .copy-button .fas {
-             font-size: 0.9rem;
-             color: var(--text-muted);
-        }
+        .copy-button:active { transform: scale(0.96); background-color: var(--button-hover-bg); }
+        .copy-button .fas { font-size: 0.9rem; color: var(--text-muted); }
 
-
-        .status-area {
-            min-height: 30px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 8px;
-            margin-top: 5px;
-        }
+        .status-area { min-height: 30px; display: flex; flex-direction: column; align-items: center; gap: 8px; margin-top: 5px; }
 
         .status-message {
-            font-weight: normal;
-            font-size: 0.9rem;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 6px 12px;
-            border-radius: 6px;
-            opacity: 0;
-            transform: translateY(5px);
+            font-weight: normal; font-size: 0.9rem;
+            display: flex; align-items: center; gap: 8px;
+            padding: 6px 12px; border-radius: 6px;
+            opacity: 0; transform: translateY(5px);
             transition: opacity 0.3s ease-out, transform 0.3s ease-out;
             border: 1px solid transparent;
-            width: fit-content; /* Prevent stretching full width */
-            max-width: 100%; /* Ensure it doesn't overflow container */
-            text-align: center;
+            width: fit-content; max-width: 100%; text-align: center;
         }
-        .status-message.visible {
-           opacity: 1;
-           transform: translateY(0);
-        }
-        .status-message .fas { font-size: 1rem; flex-shrink: 0; } /* Prevent icon shrinking */
-        .status-message span { word-break: break-word; } /* Allow text to wrap */
+        .status-message.visible { opacity: 1; transform: translateY(0); }
+        .status-message .fas { font-size: 1rem; flex-shrink: 0; }
+        .status-message span { word-break: break-word; }
         .status-message.success { color: var(--success-color); }
         .status-message.error { color: var(--error-color); }
         .status-message.info { color: var(--info-color); }
 
-
-        .redirect-instructions {
-            margin-top: 5px;
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            opacity: 0;
-            transition: opacity 0.3s ease-in-out 0.5s;
-            font-weight: normal;
-        }
-         .redirect-instructions.visible {
-             opacity: 1;
-         }
+        .redirect-instructions { margin-top: 5px; font-size: 0.8rem; color: var(--text-muted); opacity: 0; transition: opacity 0.3s ease-in-out 0.5s; font-weight: normal; }
+        .redirect-instructions.visible { opacity: 1; }
 
         .discord-link {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            margin-top: 10px;
-            padding: 12px 22px; /* Generous padding for tap target */
-            background-color: var(--discord-blue);
-            color: #ffffff;
-            text-decoration: none;
-            border-radius: 6px;
-            font-weight: 500;
-            font-size: 0.9rem;
+            display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+            margin-top: 10px; padding: 12px 22px;
+            background-color: var(--discord-blue); color: #ffffff;
+            text-decoration: none; border-radius: 6px;
+            font-weight: 500; font-size: 0.9rem;
             transition: background-color 0.2s ease, transform 0.1s ease;
-            border: none;
-            font-family: var(--font-mono);
-            -webkit-tap-highlight-color: transparent;
-            flex-shrink: 0; /* Prevent shrinking if container is narrow */
+            border: none; font-family: var(--font-mono);
+            -webkit-tap-highlight-color: transparent; flex-shrink: 0;
         }
-         /* Improve hover feedback on non-touch devices */
-        @media (hover: hover) {
-            .discord-link:hover {
-                background-color: var(--discord-blue-hover);
-            }
-        }
-         .discord-link:active {
-             transform: scale(0.98);
-             background-color: var(--discord-blue-hover); /* Feedback on tap */
-         }
-         .discord-link .fa-discord {
-             font-size: 1.1em;
-         }
+        @media (hover: hover) { .discord-link:hover { background-color: var(--discord-blue-hover); } }
+        .discord-link:active { transform: scale(0.98); background-color: var(--discord-blue-hover); }
+        .discord-link .fa-discord { font-size: 1.1em; }
 
-         /* Hide elements initially */
-         #redirect-message, #discord-return-link, #manual-copy-button {
-             display: none;
-         }
-         #manual-copy-button.visible { display: flex; }
-         #redirect-message.visible { display: block; }
-         #discord-return-link.visible { display: inline-flex; }
+        #redirect-message, #discord-return-link, #manual-copy-button { display: none; }
+        #manual-copy-button.visible { display: flex; }
+        #redirect-message.visible { display: block; }
+        #discord-return-link.visible { display: inline-flex; }
 
-        /* ========================== */
-        /* Mobile Optimizations       */
-        /* ========================== */
+        /* Mobile Optimizations */
         @media (max-width: 600px) {
-            body {
-                padding: 15px; /* Slightly reduce body padding */
-                /* Ensure smooth scroll behavior if body overflows somehow */
-                 overflow-x: hidden;
-            }
-
-            .container {
-                padding: 25px 20px; /* Reduce container padding */
-                gap: 15px; /* Reduce gap between elements */
-            }
-
-            h1 {
-                font-size: 1.25rem; /* Make heading slightly smaller */
-                padding-bottom: 12px;
-            }
-
-            pre {
-                padding: 15px; /* Reduce padding inside code block */
-                padding-right: 48px; /* Adjust space for smaller copy button */
-                font-size: 0.8rem; /* Make code text slightly smaller */
-                max-height: 55vh; /* Allow slightly more vertical height */
-            }
-            /* Ensure code font size matches pre adjustment */
-            code {
-                 font-size: 0.8rem;
-            }
-
-            .copy-button {
-                padding: 8px 10px; /* Maintain decent tap area */
-                font-size: 0.8rem; /* Match code font size */
-                top: 8px;
-                right: 8px;
-            }
-            .copy-button .fas {
-                font-size: 0.85rem; /* Adjust icon size */
-            }
-
-            .status-message {
-                font-size: 0.85rem; /* Adjust status text size */
-                padding: 6px 10px; /* Adjust status padding */
-            }
-
-            .redirect-instructions {
-                 font-size: 0.75rem; /* Smaller redirect text */
-            }
-
-            .discord-link {
-                padding: 11px 20px; /* Ensure button is still easy to tap */
-                font-size: 0.85rem; /* Adjust button font size */
-                 width: auto; /* Ensure it doesn't stretch unnecessarily */
-                 max-width: 100%; /* Prevent overflow */
-            }
+            body { padding: 15px; overflow-x: hidden; }
+            .container { padding: 25px 20px; gap: 15px; }
+            h1 { font-size: 1.25rem; padding-bottom: 12px; }
+            .title-icon { height: 1em; } /* Adjust icon size slightly */
+            pre { padding: 15px; padding-right: 48px; font-size: 0.8rem; max-height: 55vh; }
+            code { font-size: 0.8rem; }
+            .copy-button { padding: 8px 10px; font-size: 0.8rem; top: 8px; right: 8px; }
+            .copy-button .fas { font-size: 0.85rem; }
+            .status-message { font-size: 0.85rem; padding: 6px 10px; }
+            .redirect-instructions { font-size: 0.75rem; }
+            .discord-link { padding: 11px 20px; font-size: 0.85rem; width: auto; max-width: 100%; }
         }
 
-         /* Further adjustments for very small screens if necessary */
-         @media (max-width: 360px) {
+        @media (max-width: 360px) {
               h1 { font-size: 1.15rem; }
+              .title-icon { height: 0.9em; } /* Further adjust icon size */
               pre { font-size: 0.75rem; padding-right: 45px;}
               code { font-size: 0.75rem; }
               .copy-button { padding: 7px 9px; font-size: 0.75rem; }
               .status-message { font-size: 0.8rem; }
               .discord-link { padding: 10px 18px; font-size: 0.8rem; }
          }
-
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Artifact Content</h1>
+        <!-- Updated H1 to include the image -->
+        <h1>
+            <img src="https://cdn.discordapp.com/attachments/1360326540113744004/1360335430788317304/discotools-xyz-icon_85.png?ex=67fabe98&is=67f96d18&hm=5c65feeb50606178733823b266985a61b8f60feaf09ec0663c48c388c6a96a19&" alt="Artifact Icon" class="title-icon">
+            Artifact Content
+        </h1>
 
         <div class="code-block-wrapper">
             <pre id="code-block"><code id="text-to-copy">Loading content...</code></pre>
@@ -353,7 +234,7 @@
     </div>
 
     <script>
-        // --- JavaScript remains unchanged from the previous version ---
+        // --- JavaScript remains unchanged ---
         const textElement = document.getElementById('text-to-copy');
         const copyStatus = document.getElementById('copy-status');
         const errorMessage = document.getElementById('error-message');
@@ -375,13 +256,13 @@
         }
 
         function showStatus(element, message, type = 'success', iconClass = 'fa-check-circle') {
-             clearStatus(); // Clear previous messages before showing a new one
+             clearStatus();
             updateStatusContent(element, message, iconClass);
             element.className = `status-message ${type} visible`;
         }
 
          function clearStatus(type = null) {
-             const elementsToClear = [copyStatus, errorMessage, missingParamMessage]; // Add info status element if created
+             const elementsToClear = [copyStatus, errorMessage, missingParamMessage];
              elementsToClear.forEach(el => {
                  if (el) el.className = el.className.replace(' visible', '').replace(/ success| error| info/g, '');
              });
@@ -389,16 +270,13 @@
 
         function handleCopyAction() {
             if (!contentToCopy) return;
-
             navigator.clipboard.writeText(contentToCopy).then(() => {
-                copySuccess = true;
-                clearStatus();
+                copySuccess = true; clearStatus();
                 showStatus(copyStatus, 'Copied!', 'success', 'fa-check-circle');
                 manualCopyButton.innerHTML = '<i class="fas fa-check"></i> Copied!';
                 attemptRedirect();
             }).catch(err => {
-                console.error('Manual copy failed: ', err);
-                clearStatus();
+                console.error('Manual copy failed: ', err); clearStatus();
                 showStatus(errorMessage, 'Copy failed. Check permissions.', 'error', 'fa-times-circle');
                 manualCopyButton.innerHTML = '<i class="fas fa-copy"></i> Copy';
             });
@@ -406,32 +284,25 @@
 
         function attemptRedirect() {
             if (!copySuccess) return;
-
             if (returnUrl) {
                 redirectMessage.classList.add('visible');
                 discordReturnLink.href = returnUrl;
                 discordReturnLink.classList.add('visible');
-
                 setTimeout(() => {
                     try {
                         window.location.href = returnUrl;
-                        setTimeout(() => {
-                           redirectMessage.textContent = "Redirect seems blocked. Use link or close tab.";
-                        }, 2000);
+                        setTimeout(() => { redirectMessage.textContent = "Redirect seems blocked. Use link or close tab."; }, 2000);
                     } catch (e) {
-                         console.error("Redirect failed:", e);
-                         redirectMessage.textContent = "Redirect failed. Use link or close tab.";
+                         console.error("Redirect failed:", e); redirectMessage.textContent = "Redirect failed. Use link or close tab.";
                     }
                 }, 3000);
             } else {
-                 redirectMessage.textContent = "Content copied. You can close this tab.";
-                 redirectMessage.classList.add('visible');
+                 redirectMessage.textContent = "Content copied. You can close this tab."; redirectMessage.classList.add('visible');
             }
         }
 
         document.addEventListener('DOMContentLoaded', () => {
              clearStatus();
-
             try {
                 const urlParams = new URLSearchParams(window.location.search);
                 const encodedText = urlParams.get('text');
@@ -442,9 +313,7 @@
                         const decodedUrl = decodeURIComponent(encodedReturnUrl);
                         if (decodedUrl.startsWith('discord://') || /^https:\/\/discord\.com\/channels\/(@me|\d+)\/\d+$/.test(decodedUrl)) {
                            returnUrl = decodedUrl;
-                        } else {
-                           console.warn("Invalid returnUrl format:", decodedUrl); returnUrl = null;
-                        }
+                        } else { console.warn("Invalid returnUrl format:", decodedUrl); returnUrl = null; }
                     } catch (urlError) { console.error("Error decoding returnUrl:", urlError); returnUrl = null; }
                 }
 
@@ -454,8 +323,7 @@
                         textElement.textContent = contentToCopy;
                         manualCopyButton.classList.add('visible');
                     } catch (decodeError) {
-                        console.error("Error decoding text:", decodeError);
-                        textElement.textContent = '// Error Decoding Content //'; clearStatus();
+                        console.error("Error decoding text:", decodeError); textElement.textContent = '// Error Decoding Content //'; clearStatus();
                         showStatus(errorMessage, 'Error decoding content.', 'error', 'fa-exclamation-triangle'); return;
                     }
 
@@ -469,26 +337,22 @@
                         }).catch(err => {
                             console.warn('Auto-copy failed:', err); clearStatus();
                             showStatus(copyStatus, 'Ready to copy.', 'info', 'fa-info-circle');
-                            manualCopyButton.innerHTML = '<i class="fas fa-copy"></i> Copy';
+                             manualCopyButton.innerHTML = '<i class="fas fa-copy"></i> Copy';
                         });
                     } else {
-                        clearStatus();
-                        showStatus(copyStatus, 'Manual copy needed.', 'info', 'fa-info-circle');
+                        clearStatus(); showStatus(copyStatus, 'Manual copy needed.', 'info', 'fa-info-circle');
                          manualCopyButton.innerHTML = '<i class="fas fa-copy"></i> Copy';
                     }
-
                 } else {
                     textElement.textContent = '// No Content Provided //'; clearStatus();
                     showStatus(missingParamMessage, 'No content parameter.', 'error', 'fa-exclamation-triangle');
                     manualCopyButton.style.display = 'none';
                 }
             } catch (e) {
-                 console.error("Parameter processing error:", e);
-                 textElement.textContent = '// Error Loading //'; clearStatus();
+                 console.error("Parameter processing error:", e); textElement.textContent = '// Error Loading //'; clearStatus();
                  showStatus(errorMessage, 'Error processing link.', 'error', 'fa-exclamation-triangle');
                  manualCopyButton.style.display = 'none';
             }
-
             manualCopyButton.addEventListener('click', handleCopyAction);
         });
     </script>
