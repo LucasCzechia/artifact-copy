@@ -13,7 +13,7 @@ export default async function handler(request, response) {
     try {
         rawPasteUrl = decodeURIComponent(encodedRawPasteUrl);
         // Basic validation
-        if (!rawPasteUrl.startsWith('https://pastebin.com/raw/')) {
+        if (!rawPasteUrl.startsWith('https://pastecode.dev/raw/')) {
             throw new Error('Invalid URL format');
         }
     } catch (e) {
