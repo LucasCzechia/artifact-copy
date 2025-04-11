@@ -1,6 +1,5 @@
-# BoltBot⚡ Copy Text Service 
-
-- Uses:
+# BoltBot⚡ Auto Copy Text Service 
+### Uses:
 - pastecode.dev api
 - clipboard api
 - html & javascript
