@@ -90,10 +90,7 @@
         let returnUrl = null;
         let copySuccess = false;
 
-        function detectPlatform() {
-            const ua = navigator.userAgent || navigator.vendor || window.opera; const lowerUa = ua.toLowerCase();
-            if (/android/i.test(lowerUa)) return 'android'; if (/iphone|ipad|ipod/i.test(lowerUa) && !window.MSStream) return 'ios'; if (/windows phone/i.test(lowerUa)) return 'windows_phone'; if (/macintosh|mac os x/i.test(lowerUa)) return 'macos'; if (/windows nt/i.test(lowerUa)) return 'windows'; if (/linux/i.test(lowerUa) && !/android/i.test(lowerUa)) return 'linux'; return 'unknown_desktop';
-        }
+        function detectPlatform() { const ua = navigator.userAgent || navigator.vendor || window.opera; const lowerUa = ua.toLowerCase(); if (/android/i.test(lowerUa)) return 'android'; if (/iphone|ipad|ipod/i.test(lowerUa) && !window.MSStream) return 'ios'; if (/windows phone/i.test(lowerUa)) return 'windows_phone'; if (/macintosh|mac os x/i.test(lowerUa)) return 'macos'; if (/windows nt/i.test(lowerUa)) return 'windows'; if (/linux/i.test(lowerUa) && !/android/i.test(lowerUa)) return 'linux'; return 'unknown_desktop'; }
         function isMobilePlatform(platform) { return ['android', 'ios', 'windows_phone'].includes(platform); }
         function updateStatusContent(element, message, iconClass) { const iconElement = element.querySelector('i.fas'); const spanElement = element.querySelector('span'); if (iconElement) { iconElement.className = `fas ${iconClass}`; iconElement.setAttribute('aria-hidden', 'true'); } if (spanElement) spanElement.textContent = message; }
         function showStatus(element, message, type = 'success', iconClass = 'fa-check-circle') { clearStatus(); updateStatusContent(element, message, iconClass); element.className = `status-message ${type} visible`; }
@@ -111,26 +108,45 @@
             else { redirectMessage.textContent = "Content copied! You can close this tab."; redirectMessage.classList.add('visible'); discordReturnLink.style.display = 'none'; }
         }
 
-        async function fetchAndDisplayContent(url) {
+        async function fetchAndDisplayContent(encodedPasteUrlParam) {
+            showStatus(copyStatus, 'Fetching content...', 'info', 'fa-spinner fa-spin'); // Show loading status
+            manualCopyButton.style.display = 'none'; // Hide copy button while loading
+
             try {
-                const response = await fetch(url);
+                // Construct the URL to your API endpoint
+                const apiUrl = `/api/fetchPaste?rawPasteUrl=${encodedPasteUrlParam}`; // Pass encoded URL directly
+
+                const response = await fetch(apiUrl);
+
                 if (!response.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status} - ${response.statusText}`);
+                    let errorText = `HTTP error! Status: ${response.status}`;
+                    try { // Try to get more specific error from API response body
+                        const errorData = await response.json();
+                        if(errorData.error) errorText += ` - ${errorData.error}`;
+                    } catch (e) { /* Ignore if response is not JSON */ }
+                    throw new Error(errorText);
                 }
+
                 contentToCopy = await response.text();
                 textElement.textContent = contentToCopy;
                 codeBlockPre.setAttribute('aria-label', `Artifact text content: ${contentToCopy.substring(0, 100)}...`);
+                manualCopyButton.style.display = ''; // Show copy button again
                 manualCopyButton.classList.add('visible');
-                try { if (typeof hljs !== 'undefined') { hljs.highlightElement(textElement); } } catch (highlightError) { console.error("Syntax highlighting failed:", highlightError); }
+
+                try { if (typeof hljs !== 'undefined') { hljs.highlightElement(textElement); } }
+                catch (highlightError) { console.error("Syntax highlighting failed:", highlightError); }
+
+                // Clear the "Fetching" status before attempting auto-copy
+                clearStatus();
 
                 if (navigator.clipboard && window.isSecureContext) {
-                    navigator.clipboard.writeText(contentToCopy).then(() => { copySuccess = true; clearStatus(); showStatus(copyStatus, 'Auto-copied!', 'success', 'fa-check-circle'); manualCopyButton.innerHTML = '<i class="fas fa-check" aria-hidden="true"></i> Copied!'; manualCopyButton.setAttribute('aria-label', 'Content copied successfully'); attemptRedirect(); }).catch(err => { console.warn('Auto-copy failed:', err); clearStatus(); showStatus(copyStatus, 'Ready to copy manually.', 'info', 'fa-info-circle'); manualCopyButton.innerHTML = '<i class="fas fa-copy" aria-hidden="true"></i> Copy'; manualCopyButton.setAttribute('aria-label', 'Copy artifact content to clipboard'); });
-                } else { clearStatus(); const reason = window.isSecureContext ? 'Clipboard API issue?' : 'Not HTTPS.'; showStatus(copyStatus, `Manual copy needed. (${reason})`, 'info', 'fa-info-circle'); manualCopyButton.innerHTML = '<i class="fas fa-copy" aria-hidden="true"></i> Copy'; manualCopyButton.setAttribute('aria-label', 'Copy artifact content to clipboard'); }
+                    navigator.clipboard.writeText(contentToCopy).then(() => { copySuccess = true; showStatus(copyStatus, 'Auto-copied!', 'success', 'fa-check-circle'); manualCopyButton.innerHTML = '<i class="fas fa-check" aria-hidden="true"></i> Copied!'; manualCopyButton.setAttribute('aria-label', 'Content copied successfully'); attemptRedirect(); }).catch(err => { console.warn('Auto-copy failed:', err); showStatus(copyStatus, 'Ready to copy manually.', 'info', 'fa-info-circle'); manualCopyButton.innerHTML = '<i class="fas fa-copy" aria-hidden="true"></i> Copy'; manualCopyButton.setAttribute('aria-label', 'Copy artifact content to clipboard'); });
+                } else { const reason = window.isSecureContext ? 'Clipboard API issue?' : 'Not HTTPS.'; showStatus(copyStatus, `Manual copy needed. (${reason})`, 'info', 'fa-info-circle'); manualCopyButton.innerHTML = '<i class="fas fa-copy" aria-hidden="true"></i> Copy'; manualCopyButton.setAttribute('aria-label', 'Copy artifact content to clipboard'); }
 
             } catch (fetchError) {
-                console.error("Error fetching Pastebin content:", fetchError);
-                textElement.textContent = `// Error fetching content from source: ${fetchError.message} //`;
-                clearStatus(); showStatus(errorMessage, `Error fetching content: ${fetchError.message}. The temporary link might have expired.`, 'error', 'fa-exclamation-triangle');
+                console.error("Error fetching content via API:", fetchError);
+                textElement.textContent = `// Error fetching content: ${fetchError.message} //`;
+                clearStatus(); showStatus(errorMessage, `Error fetching content: ${fetchError.message}. The temporary link might have expired or the source is unavailable.`, 'error', 'fa-exclamation-triangle');
                 manualCopyButton.style.display = 'none';
             }
         }
@@ -139,7 +155,7 @@
              clearStatus();
             try {
                 const urlParams = new URLSearchParams(window.location.search);
-                const encodedRawPasteUrl = urlParams.get('rawPasteUrl');
+                const encodedRawPasteUrl = urlParams.get('rawPasteUrl'); // Get the already encoded param
                 const encodedReturnUrl = urlParams.get('returnUrl');
 
                 if (encodedReturnUrl) {
@@ -147,16 +163,8 @@
                 }
 
                 if (encodedRawPasteUrl) {
-                    try {
-                        const rawPasteUrl = decodeURIComponent(encodedRawPasteUrl);
-                        if (!rawPasteUrl.startsWith('https://pastebin.com/raw/')) {
-                            throw new Error('Invalid raw Pastebin URL format.');
-                        }
-                        fetchAndDisplayContent(rawPasteUrl);
-
-                    } catch (decodeError) {
-                        console.error("Error decoding rawPasteUrl:", decodeError); textElement.textContent = '// Error: Invalid Pastebin URL parameter //'; clearStatus(); showStatus(errorMessage, 'Error processing copy link: Invalid source URL.', 'error', 'fa-exclamation-triangle'); manualCopyButton.style.display = 'none';
-                    }
+                    // No need to decode here, pass the encoded param to fetch function
+                     fetchAndDisplayContent(encodedRawPasteUrl);
                 } else {
                     textElement.textContent = '// No Content Source Provided //'; clearStatus(); showStatus(missingParamMessage, 'No content source parameter found in URL.', 'error', 'fa-exclamation-triangle'); manualCopyButton.style.display = 'none';
                 }
