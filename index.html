@@ -42,17 +42,17 @@
         .container {
             background-color: var(--container-bg); padding: 30px 35px; border-radius: 10px;
             max-width: 700px; width: 100%; text-align: center; border: 1px solid var(--border-color);
-            display: flex; flex-direction: column; gap: 18px; /* Slightly reduced gap */
+            display: flex; flex-direction: column; gap: 15px; /* Further reduced gap */
             min-width: 0;
         }
         h1 {
             font-family: var(--font-mono); color: var(--text-bright); font-size: 1.5rem; font-weight: 500;
-            border-bottom: 1px solid var(--border-color); padding-bottom: 15px; margin-bottom: 0; /* Remove bottom margin */
+            border-bottom: 1px solid var(--border-color); padding-bottom: 15px; margin-bottom: 0;
             letter-spacing: 0.5px; word-break: break-word;
             display: flex; align-items: center; justify-content: center; gap: 0.5em;
         }
         .title-icon { height: 1.1em; width: auto; }
-        .code-block-wrapper { position: relative; margin-bottom: 5px; } /* Reduced bottom margin */
+        .code-block-wrapper { position: relative; margin-bottom: 0; } /* Significantly reduced bottom margin */
         pre {
             background-color: var(--pre-bg); color: var(--text-color);
             padding: 20px; padding-right: 55px; border-radius: 8px;
@@ -90,34 +90,34 @@
         .status-area {
             min-height: 30px; display: flex; flex-direction: column;
             align-items: center; gap: 8px;
-            margin-top: 0; /* Reduced margin-top */
-            padding-top: 5px; /* Add some padding instead */
+            margin-top: 5px; /* Small gap above status */
+            padding-top: 0;
         }
         .status-message {
             font-weight: normal;
-            font-size: 1rem; /* Increased status message font size */
-            display: flex; align-items: center; gap: 10px; /* Increased gap slightly */
-            padding: 8px 15px; /* Increased padding */
+            font-size: 1.1rem; /* Increased base status message font size */
+            display: flex; align-items: center; gap: 10px;
+            padding: 10px 18px; /* Increased padding further */
             border-radius: 6px; opacity: 0; transform: translateY(5px);
             transition: opacity 0.3s ease-out, transform 0.3s ease-out;
             border: 1px solid transparent; width: fit-content; max-width: 100%; text-align: center;
         }
         .status-message.visible { opacity: 1; transform: translateY(0); }
-        .status-message .fas { font-size: 1.1rem; flex-shrink: 0; } /* Slightly larger icon */
+        .status-message .fas { font-size: 1.2rem; flex-shrink: 0; } /* Larger icon */
         .status-message span { word-break: break-word; }
         .status-message.success { color: var(--success-color); }
         .status-message.error { color: var(--error-color); }
         .status-message.info { color: var(--info-color); }
         .redirect-instructions {
-             margin-top: 2px; /* Reduced top margin */
-             font-size: 0.85rem; /* Slightly larger redirect text */
+             margin-top: 4px; /* Adjusted margin */
+             font-size: 0.85rem;
              color: var(--text-muted); opacity: 0;
              transition: opacity 0.3s ease-in-out 0.5s; font-weight: normal;
          }
         .redirect-instructions.visible { opacity: 1; }
         .discord-link {
             display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-            margin-top: 8px; /* Slightly reduced margin */
+            margin-top: 10px; /* Keep some margin for the button */
             padding: 12px 22px; background-color: var(--discord-blue);
             color: #ffffff; text-decoration: none; border-radius: 6px;
             font-weight: 500; font-size: 0.9rem;
@@ -139,24 +139,29 @@
         }
         @media (max-width: 600px) {
             body { padding: 15px; overflow-x: hidden; }
-            .container { padding: 25px 20px; gap: 15px; }
+            .container { padding: 25px 20px; gap: 12px; } /* Reduced mobile gap */
             h1 { font-size: 1.25rem; padding-bottom: 12px; }
             .title-icon { height: 1em; }
             pre { padding: 15px; padding-right: 48px; max-height: 55vh; }
             pre code.hljs { font-size: 0.9rem; }
             .copy-button { padding: 8px 10px; font-size: 0.8rem; top: 8px; right: 8px; }
             .copy-button .fas { font-size: 0.85rem; }
-            .status-message { font-size: 0.9rem; padding: 7px 12px; } /* Adjust mobile status size */
-            .status-message .fas { font-size: 1rem; }
-            .redirect-instructions { font-size: 0.8rem; } /* Adjust mobile redirect size */
-            .discord-link { padding: 11px 20px; font-size: 0.85rem; width: auto; max-width: 100%; }
+             /* --- Mobile Status Message Size --- */
+            .status-message {
+                font-size: 1rem; /* Keep status reasonably large on mobile */
+                padding: 8px 14px; /* Adjust padding */
+            }
+            .status-message .fas { font-size: 1.1rem; }
+            .redirect-instructions { font-size: 0.8rem; }
+            .discord-link { padding: 11px 20px; font-size: 0.85rem; width: auto; max-width: 100%; margin-top: 8px;}
         }
         @media (max-width: 360px) {
               h1 { font-size: 1.15rem; } .title-icon { height: 0.9em; }
               pre code.hljs { font-size: 0.8rem; }
               pre { padding-right: 45px; }
               .copy-button { padding: 7px 9px; font-size: 0.75rem; }
-              .status-message { font-size: 0.85rem; }
+              .status-message { font-size: 0.9rem; } /* Slightly smaller on very small screens */
+               .status-message .fas { font-size: 1rem; }
               .redirect-instructions { font-size: 0.75rem; }
               .discord-link { padding: 10px 18px; font-size: 0.8rem; }
          }
