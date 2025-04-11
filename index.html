@@ -90,7 +90,7 @@
         .status-area {
             min-height: 30px; display: flex; flex-direction: column;
             align-items: center;
-            gap: 3px; /* Significantly Reduced gap */
+            gap: 0; /* Removed gap */
             margin-top: 5px;
             padding-top: 0;
         }
@@ -102,7 +102,6 @@
             border-radius: 6px; opacity: 0; transform: translateY(5px);
             transition: opacity 0.3s ease-out, transform 0.3s ease-out;
             border: 1px solid transparent; width: fit-content; max-width: 100%; text-align: center;
-            /* Remove bottom margin if any was implicitly added */
             margin-bottom: 0;
         }
         .status-message.visible { opacity: 1; transform: translateY(0); }
@@ -112,10 +111,12 @@
         .status-message.error { color: var(--error-color); }
         .status-message.info { color: var(--info-color); }
         .redirect-instructions {
-             margin-top: 2px; /* Minimal top margin */
+             margin-top: 0; /* Removed top margin */
              font-size: 0.85rem;
              color: var(--text-muted); opacity: 0;
              transition: opacity 0.3s ease-in-out 0.5s; font-weight: normal;
+             /* Optional: Add slight padding if text touches icon baseline */
+             /* padding-top: 2px; */
          }
         .redirect-instructions.visible { opacity: 1; }
         .discord-link {
@@ -154,7 +155,7 @@
                 padding: 8px 14px;
             }
             .status-message .fas { font-size: 1.1rem; }
-            .redirect-instructions { font-size: 0.8rem; margin-top: 1px; /* Minimal margin on mobile too */ }
+            .redirect-instructions { font-size: 0.8rem; margin-top: 0; } /* Ensure no margin on mobile */
             .discord-link { padding: 11px 20px; font-size: 0.85rem; width: auto; max-width: 100%; margin-top: 8px;}
         }
         @media (max-width: 360px) {
