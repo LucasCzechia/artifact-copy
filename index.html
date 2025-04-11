@@ -3,119 +3,106 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BoltBot⚡ - Copy Artifact</title>
+    <title>Copy Artifact</title>
     <link rel="icon" type="image/png" href="https://cdn.discordapp.com/attachments/1360326540113744004/1360335430788317304/discotools-xyz-icon_85.png?ex=67fabe98&is=67f96d18&hm=5c65feeb50606178733823b266985a61b8f60feaf09ec0663c48c388c6a96a19&">
+
+    <!-- Font Awesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- Highlight.js CSS Theme (Example: atom-one-dark) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <!-- You can choose other themes from: https://highlightjs.org/static/demo/ -->
+
     <style>
         :root {
             --bg-color: #000000;
             --container-bg: #0d0d0d;
-            --pre-bg: #1a1a1a;
-            --pre-hover-bg: #222222; /* Slightly lighter for hover */
-            --button-bg: #252525;
-            --button-hover-bg: #333333;
-            --button-focus-outline: #58a6ff; /* Clear focus indicator color */
-            --text-color: #e0e0e0;
-            --text-bright: #ffffff;
-            --text-muted: #888888;
-            --border-color: #333333;
-            --success-color: #4caf50;
-            --error-color: #f44336;
-            --info-color: #2196F3;
-            --discord-blue: #5865f2;
-            --discord-blue-hover: #4752c4;
-            --font-mono: ui-monospace, Menlo, Monaco, Cascadia Mono, Segoe UI Mono, "Roboto Mono", "Oxygen Mono", "Ubuntu Monospace", "Source Code Pro", "Fira Mono", "Droid Sans Mono", "Courier New", monospace;
+            /* Use Highlight.js theme background for pre, adjust if needed */
+            /* --pre-bg: #282c34; */ /* Example: background from atom-one-dark */
+             --pre-bg: #1a1a1a; /* Or keep our dark gray */
+             --pre-hover-bg: #222222;
+             --button-bg: #252525;
+             --button-hover-bg: #333333;
+             --button-focus-outline: #58a6ff;
+             --text-color: #e0e0e0; /* Base text color */
+             --text-bright: #ffffff;
+             --text-muted: #888888;
+             --border-color: #333333;
+             --success-color: #4caf50;
+             --error-color: #f44336;
+             --info-color: #2196F3;
+             --discord-blue: #5865f2;
+             --discord-blue-hover: #4752c4;
+             --font-mono: ui-monospace, Menlo, Monaco, Cascadia Mono, Segoe UI Mono, "Roboto Mono", "Oxygen Mono", "Ubuntu Monospace", "Source Code Pro", "Fira Mono", "Droid Sans Mono", "Courier New", monospace;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        html { font-size: 16px; -webkit-overflow-scrolling: touch; scroll-behavior: smooth; } /* Added smooth scroll */
+        html { font-size: 16px; -webkit-overflow-scrolling: touch; scroll-behavior: smooth; }
 
         body {
             font-family: var(--font-mono);
             background-color: var(--bg-color);
-            color: var(--text-color);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            padding: 20px;
-            line-height: 1.5;
+            color: var(--text-color); /* Default text color */
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            min-height: 100vh; padding: 20px; line-height: 1.5;
             -webkit-text-size-adjust: 100%; text-size-adjust: 100%;
-            /* Font Smoothing */
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
+            -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
         }
 
-        /* Basic focus outline for accessibility, enhanced by :focus-visible */
-        a:focus, button:focus, [tabindex]:focus {
-             outline: 2px solid var(--button-focus-outline);
-             outline-offset: 2px;
-             border-radius: 4px; /* Match element radius if possible */
-        }
-        /* Use :focus-visible for modern browsers to only show outline on keyboard focus */
-        a:focus-visible, button:focus-visible, [tabindex]:focus-visible {
-            outline: 2px solid var(--button-focus-outline);
-            outline-offset: 2px;
-             border-radius: 4px;
-        }
-        /* Remove default outline if :focus-visible is supported and not active */
-        a:focus:not(:focus-visible), button:focus:not(:focus-visible), [tabindex]:focus:not(:focus-visible) {
-             outline: none;
-        }
-
+        a:focus, button:focus, [tabindex]:focus { outline: 2px solid var(--button-focus-outline); outline-offset: 2px; border-radius: 4px; }
+        a:focus-visible, button:focus-visible, [tabindex]:focus-visible { outline: 2px solid var(--button-focus-outline); outline-offset: 2px; border-radius: 4px; }
+        a:focus:not(:focus-visible), button:focus:not(:focus-visible), [tabindex]:focus:not(:focus-visible) { outline: none; }
 
         .container {
-            background-color: var(--container-bg);
-            padding: 30px 35px; border-radius: 10px;
-            max-width: 700px; width: 100%;
-            text-align: center; border: 1px solid var(--border-color);
-            display: flex; flex-direction: column; gap: 20px;
-            min-width: 0;
+            background-color: var(--container-bg); padding: 30px 35px; border-radius: 10px;
+            max-width: 700px; width: 100%; text-align: center; border: 1px solid var(--border-color);
+            display: flex; flex-direction: column; gap: 20px; min-width: 0;
         }
 
         h1 {
-             font-family: var(--font-mono); color: var(--text-bright);
-             font-size: 1.5rem; font-weight: 500;
-             border-bottom: 1px solid var(--border-color);
-             padding-bottom: 15px; margin-bottom: 5px;
-             letter-spacing: 0.5px; word-break: break-word;
-             display: flex; align-items: center; justify-content: center; gap: 0.5em;
+            font-family: var(--font-mono); color: var(--text-bright); font-size: 1.5rem; font-weight: 500;
+            border-bottom: 1px solid var(--border-color); padding-bottom: 15px; margin-bottom: 5px;
+            letter-spacing: 0.5px; word-break: break-word;
+            display: flex; align-items: center; justify-content: center; gap: 0.5em;
         }
         .title-icon { height: 1.1em; width: auto; }
 
         .code-block-wrapper { position: relative; margin-bottom: 10px; }
 
         pre {
-            background-color: var(--pre-bg);
+            background-color: var(--pre-bg); /* Use our background */
+            color: var(--text-color); /* Default code text color before highlight */
             padding: 20px; padding-right: 55px; border-radius: 8px;
             text-align: left; overflow: auto; max-height: 48vh;
             white-space: pre-wrap; word-wrap: break-word;
             border: 1px solid var(--border-color);
             scrollbar-width: thin; scrollbar-color: var(--text-muted) var(--pre-bg);
-            transition: background-color 0.2s ease; /* Added transition */
+            transition: background-color 0.2s ease;
         }
-        /* Subtle hover effect on code block */
-        @media (hover: hover) {
-            pre:hover {
-                 background-color: var(--pre-hover-bg);
-            }
+        /* Highlight.js overrides default code color */
+        pre code.hljs {
+            display: block;
+            overflow-x: auto;
+            padding: 0; /* Remove default padding from hljs */
+            background: none; /* Use pre's background */
+            color: inherit; /* Inherit from pre initially */
+            font-family: var(--font-mono);
+             font-size: 0.9rem; /* Ensure font size consistency */
+             word-break: break-all; /* Allow breaking long identifiers */
         }
+
+        @media (hover: hover) { pre:hover { background-color: var(--pre-hover-bg); } }
         pre::-webkit-scrollbar { width: 8px; height: 8px; }
         pre::-webkit-scrollbar-track { background: var(--pre-bg); border-radius: 4px;}
         pre::-webkit-scrollbar-thumb { background-color: var(--text-muted); border-radius: 4px; border: 2px solid var(--pre-bg); }
 
-        code {
-            font-family: var(--font-mono); font-size: 0.9rem;
-            color: var(--text-color); display: block; word-break: break-all;
-        }
+        /* code tag is now styled by hljs */
 
         .copy-button {
-            position: absolute; top: 10px; right: 10px;
-            background-color: var(--button-bg); color: var(--text-color);
-            border: none; border-radius: 6px;
-            padding: 7px 12px; font-size: 0.85rem;
-            cursor: pointer; transition: background-color 0.2s ease, transform 0.1s ease;
+            position: absolute; top: 10px; right: 10px; background-color: var(--button-bg);
+            color: var(--text-color); border: none; border-radius: 6px;
+            padding: 7px 12px; font-size: 0.85rem; cursor: pointer;
+            transition: background-color 0.2s ease, transform 0.1s ease;
             display: flex; align-items: center; gap: 6px;
             font-family: var(--font-mono); -webkit-tap-highlight-color: transparent;
         }
@@ -126,20 +113,13 @@
         .copy-button:active { transform: scale(0.96); background-color: var(--button-hover-bg); }
         .copy-button .fas { font-size: 0.9rem; color: var(--text-muted); }
 
-        /* Status Area with ARIA live region */
-        .status-area {
-            min-height: 30px; display: flex; flex-direction: column;
-            align-items: center; gap: 8px; margin-top: 5px;
-        }
+        .status-area { min-height: 30px; display: flex; flex-direction: column; align-items: center; gap: 8px; margin-top: 5px; }
 
         .status-message {
-            font-weight: normal; font-size: 0.9rem;
-            display: flex; align-items: center; gap: 8px;
-            padding: 6px 12px; border-radius: 6px;
-            opacity: 0; transform: translateY(5px);
+            font-weight: normal; font-size: 0.9rem; display: flex; align-items: center; gap: 8px;
+            padding: 6px 12px; border-radius: 6px; opacity: 0; transform: translateY(5px);
             transition: opacity 0.3s ease-out, transform 0.3s ease-out;
-            border: 1px solid transparent;
-            width: fit-content; max-width: 100%; text-align: center;
+            border: 1px solid transparent; width: fit-content; max-width: 100%; text-align: center;
         }
         .status-message.visible { opacity: 1; transform: translateY(0); }
         .status-message .fas { font-size: 1rem; flex-shrink: 0; }
@@ -153,9 +133,8 @@
 
         .discord-link {
             display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-            margin-top: 10px; padding: 12px 22px;
-            background-color: var(--discord-blue); color: #ffffff;
-            text-decoration: none; border-radius: 6px;
+            margin-top: 10px; padding: 12px 22px; background-color: var(--discord-blue);
+            color: #ffffff; text-decoration: none; border-radius: 6px;
             font-weight: 500; font-size: 0.9rem;
             transition: background-color 0.2s ease, transform 0.1s ease;
             border: none; font-family: var(--font-mono);
@@ -170,19 +149,10 @@
         #redirect-message.visible { display: block; }
         #discord-return-link.visible { display: inline-flex; }
 
-        /* NoScript styles */
         noscript {
-            display: block; /* Make it visible */
-            padding: 15px;
-            margin: 20px auto;
-            background-color: var(--error-color);
-            color: var(--text-bright);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            text-align: center;
-            font-family: var(--font-mono);
-            max-width: 700px; /* Match container width */
-            width: 100%;
+            display: block; padding: 15px; margin: 20px auto; background-color: var(--error-color);
+            color: var(--text-bright); border: 1px solid var(--border-color); border-radius: 8px;
+            text-align: center; font-family: var(--font-mono); max-width: 700px; width: 100%;
         }
 
         /* Mobile Optimizations */
@@ -191,8 +161,9 @@
             .container { padding: 25px 20px; gap: 15px; }
             h1 { font-size: 1.25rem; padding-bottom: 12px; }
             .title-icon { height: 1em; }
-            pre { padding: 15px; padding-right: 48px; font-size: 0.8rem; max-height: 55vh; }
-            code { font-size: 0.8rem; }
+            pre { padding: 15px; padding-right: 48px; max-height: 55vh; }
+            /* Adjust hljs font size on mobile */
+            pre code.hljs { font-size: 0.8rem; }
             .copy-button { padding: 8px 10px; font-size: 0.8rem; top: 8px; right: 8px; }
             .copy-button .fas { font-size: 0.85rem; }
             .status-message { font-size: 0.85rem; padding: 6px 10px; }
@@ -201,7 +172,8 @@
         }
         @media (max-width: 360px) {
               h1 { font-size: 1.15rem; } .title-icon { height: 0.9em; }
-              pre { font-size: 0.75rem; padding-right: 45px;} code { font-size: 0.75rem; }
+              pre code.hljs { font-size: 0.75rem; } /* Adjust hljs font size */
+              pre { padding-right: 45px; }
               .copy-button { padding: 7px 9px; font-size: 0.75rem; }
               .status-message { font-size: 0.8rem; }
               .discord-link { padding: 10px 18px; font-size: 0.8rem; }
@@ -209,7 +181,6 @@
     </style>
 </head>
 <body>
-    <!-- Add NoScript tag for users without JavaScript -->
     <noscript>
         This page requires JavaScript to function correctly. Please enable JavaScript in your browser settings.
     </noscript>
@@ -221,21 +192,19 @@
         </h1>
 
         <div class="code-block-wrapper">
-            <pre id="code-block" tabindex="0" aria-label="Artifact text content"><code id="text-to-copy">Loading content...</code></pre>
-             <!-- Added aria-label and made pre focusable -->
+             <!-- Ensure the <code> has the ID for highlighting -->
+            <pre id="code-block-pre" tabindex="0" aria-label="Artifact text content"><code id="text-to-copy" class="hljs">Loading content...</code></pre>
             <button id="manual-copy-button" class="copy-button" aria-label="Copy artifact content to clipboard">
-                 <!-- Added specific aria-label -->
                 <i class="fas fa-copy" aria-hidden="true"></i> Copy
             </button>
         </div>
 
-        <!-- Add aria-live to announce status changes -->
         <div class="status-area" aria-live="polite">
             <div id="copy-status" class="status-message"><i class="fas" aria-hidden="true"></i> <span></span></div>
             <div id="error-message" class="status-message error"><i class="fas" aria-hidden="true"></i> <span></span></div>
             <div id="missing-param-message" class="status-message error"><i class="fas" aria-hidden="true"></i> <span></span></div>
             <div id="redirect-message" class="redirect-instructions">
-                Attempting redirect... Use link below or close tab if needed.
+                <!-- Message updated dynamically -->
             </div>
         </div>
 
@@ -245,10 +214,14 @@
 
     </div>
 
+    <!-- Highlight.js Script -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <!-- Optional: Load specific languages for smaller bundle size -->
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/javascript.min.js"></script> -->
     <script>
-        // --- JavaScript: Refined status messages ---
+        // --- Main Application Script ---
         const textElement = document.getElementById('text-to-copy');
-        const codeBlockPre = document.getElementById('code-block');
+        const codeBlockPre = document.getElementById('code-block-pre'); // Use pre for aria-label update
         const copyStatus = document.getElementById('copy-status');
         const errorMessage = document.getElementById('error-message');
         const missingParamMessage = document.getElementById('missing-param-message');
@@ -258,134 +231,134 @@
 
         let contentToCopy = '';
         let returnUrl = null;
-        let autoCopyAttempted = false;
         let copySuccess = false;
 
+        // --- Platform Detection ---
+        function isMobile() {
+            const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+            // Simple check for common mobile indicators
+            return /android|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(userAgent.toLowerCase());
+        }
+
+        // --- Status Updates ---
         function updateStatusContent(element, message, iconClass) {
             const iconElement = element.querySelector('i.fas');
             const spanElement = element.querySelector('span');
-            if (iconElement) {
-                iconElement.className = `fas ${iconClass}`;
-                iconElement.setAttribute('aria-hidden', 'true'); // Ensure icons are hidden from screen readers
-            }
+            if (iconElement) { iconElement.className = `fas ${iconClass}`; iconElement.setAttribute('aria-hidden', 'true'); }
             if (spanElement) spanElement.textContent = message;
         }
-
         function showStatus(element, message, type = 'success', iconClass = 'fa-check-circle') {
-             clearStatus(); // Clear previous messages before showing a new one
-            updateStatusContent(element, message, iconClass);
-            element.className = `status-message ${type} visible`;
+             clearStatus(); updateStatusContent(element, message, iconClass);
+             element.className = `status-message ${type} visible`;
         }
-
-         function clearStatus(type = null) {
-             const elementsToClear = [copyStatus, errorMessage, missingParamMessage];
-             elementsToClear.forEach(el => {
+        function clearStatus() {
+             [copyStatus, errorMessage, missingParamMessage].forEach(el => {
                  if (el) el.className = el.className.replace(' visible', '').replace(/ success| error| info/g, '');
              });
-         }
+        }
 
+        // --- Copy Action ---
         function handleCopyAction() {
             if (!contentToCopy) return;
             navigator.clipboard.writeText(contentToCopy).then(() => {
                 copySuccess = true; clearStatus();
                 showStatus(copyStatus, 'Copied!', 'success', 'fa-check-circle');
                 manualCopyButton.innerHTML = '<i class="fas fa-check" aria-hidden="true"></i> Copied!';
-                manualCopyButton.setAttribute('aria-label', 'Content copied successfully'); // Update label on success
-                attemptRedirect();
+                manualCopyButton.setAttribute('aria-label', 'Content copied successfully');
+                attemptRedirect(); // Attempt redirect logic
             }).catch(err => {
                 console.error('Manual copy failed: ', err); clearStatus();
-                showStatus(errorMessage, 'Copy failed. Check browser permissions.', 'error', 'fa-times-circle'); // Slightly more info
+                showStatus(errorMessage, 'Copy failed. Check browser permissions.', 'error', 'fa-times-circle');
                 manualCopyButton.innerHTML = '<i class="fas fa-copy" aria-hidden="true"></i> Copy';
-                manualCopyButton.setAttribute('aria-label', 'Copy artifact content to clipboard'); // Reset label on failure
+                manualCopyButton.setAttribute('aria-label', 'Copy artifact content to clipboard');
             });
-        }
+         }
 
+        // --- Redirect Logic (Platform Dependent) ---
         function attemptRedirect() {
             if (!copySuccess) return;
+
             if (returnUrl) {
-                redirectMessage.textContent = "Content copied! Attempting redirect back to Discord..."; // Clearer message
-                redirectMessage.classList.add('visible');
+                // Prepare button and show base message regardless of platform
                 discordReturnLink.href = returnUrl;
-                discordReturnLink.classList.add('visible');
-                setTimeout(() => {
-                    try {
-                        window.location.href = returnUrl;
-                        setTimeout(() => { redirectMessage.textContent = "Redirect may be blocked. Use link or close tab."; }, 2000);
-                    } catch (e) {
-                         console.error("Redirect failed:", e); redirectMessage.textContent = "Redirect failed. Use link or close tab.";
-                    }
-                }, 3000);
+                discordReturnLink.classList.add('visible'); // Show button immediately on success
+
+                if (!isMobile()) {
+                    // DESKTOP: Attempt automatic redirect after delay
+                    redirectMessage.textContent = "Content copied! Attempting redirect back to Discord...";
+                    redirectMessage.classList.add('visible');
+                    setTimeout(() => {
+                        try {
+                            window.location.href = returnUrl;
+                            // Fallback message if redirect is blocked
+                            setTimeout(() => { redirectMessage.textContent = "Redirect may be blocked. Use link above or close tab."; }, 2000);
+                        } catch (e) {
+                             console.error("Redirect failed:", e);
+                             redirectMessage.textContent = "Redirect failed. Use link above or close tab.";
+                        }
+                    }, 2500); // Slightly shorter delay
+                } else {
+                    // MOBILE: Show message and button, NO automatic redirect
+                    redirectMessage.textContent = "Content copied! Use the button below to return to Discord.";
+                    redirectMessage.classList.add('visible');
+                }
             } else {
+                 // No return URL: Just show success message
                  redirectMessage.textContent = "Content copied! You can close this tab.";
                  redirectMessage.classList.add('visible');
             }
         }
 
+        // --- Initialization ---
         document.addEventListener('DOMContentLoaded', () => {
              clearStatus();
             try {
-                // URL Parameter Processing (Consider URL length limits for very large text)
-                // Browsers typically support URLs up to ~2000 characters, but it varies.
-                // Extremely large content might need alternative transfer methods.
                 const urlParams = new URLSearchParams(window.location.search);
                 const encodedText = urlParams.get('text');
                 const encodedReturnUrl = urlParams.get('returnUrl');
 
                 // Decode Return URL
                 if (encodedReturnUrl) {
-                    try {
-                        const decodedUrl = decodeURIComponent(encodedReturnUrl);
-                        if (decodedUrl.startsWith('discord://') || /^https:\/\/discord\.com\/channels\/(@me|\d+)\/\d+$/.test(decodedUrl)) {
-                           returnUrl = decodedUrl;
-                        } else { console.warn("Invalid returnUrl format:", decodedUrl); returnUrl = null; }
-                    } catch (urlError) { console.error("Error decoding returnUrl:", urlError); returnUrl = null; }
+                    try { const decodedUrl = decodeURIComponent(encodedReturnUrl); if (decodedUrl.startsWith('discord://') || /^https:\/\/discord\.com\/channels\/(@me|\d+)\/\d+$/.test(decodedUrl)) { returnUrl = decodedUrl; } else { console.warn("Invalid returnUrl format:", decodedUrl); returnUrl = null; } } catch (urlError) { console.error("Error decoding returnUrl:", urlError); returnUrl = null; }
                 }
 
                 // Decode and Display Text Content
                 if (encodedText) {
                     try {
                         contentToCopy = decodeURIComponent(encodedText);
-                        textElement.textContent = contentToCopy;
-                        codeBlockPre.setAttribute('aria-label', `Artifact text content: ${contentToCopy.substring(0, 100)}...`); // Add some content to pre label
+                        textElement.textContent = contentToCopy; // Set raw text first
+                        codeBlockPre.setAttribute('aria-label', `Artifact text content: ${contentToCopy.substring(0, 100)}...`);
                         manualCopyButton.classList.add('visible');
+
+                        // --- Apply Syntax Highlighting ---
+                        try {
+                           if (typeof hljs !== 'undefined') {
+                               hljs.highlightElement(textElement);
+                           } else {
+                               console.warn('Highlight.js not loaded.');
+                           }
+                        } catch (highlightError) {
+                            console.error("Syntax highlighting failed:", highlightError);
+                            // Non-critical error, proceed without highlighting
+                        }
+                        // ----------------------------------
+
                     } catch (decodeError) {
-                        console.error("Error decoding text:", decodeError); textElement.textContent = '// Error Decoding Content //'; clearStatus();
-                        showStatus(errorMessage, 'Error decoding content from URL.', 'error', 'fa-exclamation-triangle'); return;
+                        console.error("Error decoding text:", decodeError); textElement.textContent = '// Error Decoding Content //'; clearStatus(); showStatus(errorMessage, 'Error decoding content from URL.', 'error', 'fa-exclamation-triangle'); return;
                     }
 
                     // Attempt Automatic Copy
                     if (navigator.clipboard && window.isSecureContext) {
-                        autoCopyAttempted = true;
-                        navigator.clipboard.writeText(contentToCopy).then(() => {
-                            copySuccess = true; clearStatus();
-                            showStatus(copyStatus, 'Auto-copied!', 'success', 'fa-check-circle');
-                            manualCopyButton.innerHTML = '<i class="fas fa-check" aria-hidden="true"></i> Copied!';
-                            manualCopyButton.setAttribute('aria-label', 'Content copied successfully');
-                            attemptRedirect();
-                        }).catch(err => {
-                            console.warn('Auto-copy failed (Clipboard API may require user interaction):', err); clearStatus();
-                            showStatus(copyStatus, 'Ready to copy manually.', 'info', 'fa-info-circle'); // Keep it neutral
-                            manualCopyButton.innerHTML = '<i class="fas fa-copy" aria-hidden="true"></i> Copy';
-                            manualCopyButton.setAttribute('aria-label', 'Copy artifact content to clipboard');
-                        });
+                        navigator.clipboard.writeText(contentToCopy).then(() => { copySuccess = true; clearStatus(); showStatus(copyStatus, 'Auto-copied!', 'success', 'fa-check-circle'); manualCopyButton.innerHTML = '<i class="fas fa-check" aria-hidden="true"></i> Copied!'; manualCopyButton.setAttribute('aria-label', 'Content copied successfully'); attemptRedirect(); }).catch(err => { console.warn('Auto-copy failed:', err); clearStatus(); showStatus(copyStatus, 'Ready to copy manually.', 'info', 'fa-info-circle'); manualCopyButton.innerHTML = '<i class="fas fa-copy" aria-hidden="true"></i> Copy'; manualCopyButton.setAttribute('aria-label', 'Copy artifact content to clipboard'); });
                     } else {
-                        clearStatus();
-                        // Explain *why* manual copy is needed
-                        const reason = window.isSecureContext ? 'Clipboard API not supported?' : 'Page not loaded securely (HTTPS).';
-                        showStatus(copyStatus, `Manual copy needed. (${reason})`, 'info', 'fa-info-circle');
-                        manualCopyButton.innerHTML = '<i class="fas fa-copy" aria-hidden="true"></i> Copy';
-                        manualCopyButton.setAttribute('aria-label', 'Copy artifact content to clipboard');
+                        clearStatus(); const reason = window.isSecureContext ? 'Clipboard API issue?' : 'Not HTTPS.'; showStatus(copyStatus, `Manual copy needed. (${reason})`, 'info', 'fa-info-circle'); manualCopyButton.innerHTML = '<i class="fas fa-copy" aria-hidden="true"></i> Copy'; manualCopyButton.setAttribute('aria-label', 'Copy artifact content to clipboard');
                     }
 
                 } else {
-                    textElement.textContent = '// No Content Provided //'; clearStatus();
-                    showStatus(missingParamMessage, 'No content parameter in URL.', 'error', 'fa-exclamation-triangle');
-                    manualCopyButton.style.display = 'none';
+                    textElement.textContent = '// No Content Provided //'; clearStatus(); showStatus(missingParamMessage, 'No content parameter.', 'error', 'fa-exclamation-triangle'); manualCopyButton.style.display = 'none';
                 }
             } catch (e) {
-                 console.error("Parameter processing error:", e); textElement.textContent = '// Error Loading //'; clearStatus();
-                 showStatus(errorMessage, 'Error processing link parameters.', 'error', 'fa-exclamation-triangle');
-                 manualCopyButton.style.display = 'none';
+                 console.error("Parameter processing error:", e); textElement.textContent = '// Error Loading //'; clearStatus(); showStatus(errorMessage, 'Error processing link parameters.', 'error', 'fa-exclamation-triangle'); manualCopyButton.style.display = 'none';
             }
             manualCopyButton.addEventListener('click', handleCopyAction);
         });
