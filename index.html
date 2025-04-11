@@ -154,7 +154,6 @@
             }
         }
 
-
         async function handleManualCopy() {
             if (!contentToCopy || copyButton.disabled) return;
 
@@ -261,12 +260,12 @@
              }
         }
 
-        async function fetchAndDisplayContent(encodedPasteUrlParam) {
+        async function fetchAndDisplayContent(pasteUuidParam) {
             showStatus('Fetching artifact...', 'info', 'fa-spinner fa-spin');
             updateCopyButton('loading', 'Loading...', 'fa-spinner fa-spin', 'Loading content', true);
 
             try {
-                const apiUrl = `/api/fetchPaste?rawPasteUrl=${encodedPasteUrlParam}`;
+                const apiUrl = `/api/fetchPaste?pasteUuid=${pasteUuidParam}`;
                 const response = await fetch(apiUrl);
 
                 if (!response.ok) {
@@ -277,10 +276,10 @@
                             errorText += ` Message: ${errorData.error}`;
                         }
                     } catch (e) { }
-                    if (response.status === 404 || response.status === 403) {
-                         errorText += " The temporary link might have expired or access is denied.";
+                    if (response.status === 404 || response.status === 403 || response.status === 401) {
+                         errorText += " The temporary link might have expired, access is denied, or the backend API token is invalid.";
                     } else if (response.status >= 500) {
-                         errorText += " There might be a server issue.";
+                         errorText += " There might be a server issue or backend configuration error.";
                     }
                     throw new Error(errorText);
                 }
@@ -324,7 +323,7 @@
 
             try {
                 const urlParams = new URLSearchParams(window.location.search);
-                const encodedRawPasteUrl = urlParams.get('rawPasteUrl');
+                const pasteUuid = urlParams.get('pasteUuid');
                 const encodedReturnUrl = urlParams.get('returnUrl');
 
                 if (encodedReturnUrl) {
@@ -342,12 +341,12 @@
                     }
                 }
 
-                if (encodedRawPasteUrl) {
-                    fetchAndDisplayContent(encodedRawPasteUrl);
+                if (pasteUuid) {
+                    fetchAndDisplayContent(pasteUuid);
                 } else {
                     textElement.textContent = '// Artifact source missing //';
                     codeBlockPre.setAttribute('aria-label', 'Artifact source missing');
-                    showStatus('Error: No artifact source parameter found in the URL.', 'error', 'fa-exclamation-triangle');
+                    showStatus('Error: No artifact source (pasteUuid) parameter found in the URL.', 'error', 'fa-exclamation-triangle');
                      updateCopyButton('error', 'Error', 'fa-times-circle', 'Missing content source', true);
                 }
             } catch (e) {
